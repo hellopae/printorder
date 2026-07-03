@@ -1,0 +1,28 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #F0F4FF; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+@keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.editable-field { transition: all .15s; cursor: text; }
+.editable-field:hover { background: #EFF6FF !important; border-radius: 6px; }
+input.inline-input {
+  outline: none; background: #EFF6FF; border-radius: 6px;
+  padding: 2px 6px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600; color: #1D4ED8; text-align: right; border: 1.5px solid #3B82F6;
+}
+.step-card {
+  background: white; border-radius: 16px; border: 1px solid #E2E8F0;
+  margin-bottom: 16px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04); animation: fadeIn .3s ease; transition: box-shadow .2s;
+}
+.step-card:hover { box-shadow: 0 2px 12px rgba(29,78,216,.06); }
+.connector { display: flex; justify-content: center; align-items: center; height: 28px; color: #94A3B8; font-size: 18px; }
