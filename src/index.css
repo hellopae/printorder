@@ -26,3 +26,21 @@ input.inline-input {
 }
 .step-card:hover { box-shadow: 0 2px 12px rgba(29,78,216,.06); }
 .connector { display: flex; justify-content: center; align-items: center; height: 28px; color: #94A3B8; font-size: 18px; }
+
+/* ===== พิมพ์ใบเสนอราคา: ให้ออกเฉพาะแผ่น A4 ===== */
+@media print {
+  body { background: white; }
+  .no-print { display: none !important; }
+  .app-chrome { height: auto !important; overflow: visible !important; }
+  .app-chrome > header { display: none !important; }
+  .print-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+  }
+  @page { size: A4; margin: 8mm; }
+}
+@media print {
+  .print-outer { background: white !important; padding: 0 !important; overflow: visible !important; }
+}

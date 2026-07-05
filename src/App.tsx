@@ -1,25 +1,30 @@
 import { useState } from 'react';
-import type { Order, Page } from './lib/types';
-import { fmtI } from './lib/theme';
-import { EMPTY_ORDER } from './lib/aiReply';
+import type { DraftQuotation, Page, Quotation } from './lib/types';
+import { draftFromQuotation, emptyDraft } from './lib/drafts';
 import { Header } from './components/Header';
-import { ChatPage } from './pages/ChatPage';
-import { PricingPage } from './pages/PricingPage';
 import { QuotationsPage } from './pages/QuotationsPage';
+import { EditorPage } from './pages/EditorPage';
 
 export default function App() {
-  const [page, setPage] = useState<Page>('chat');
-  const [sidebar, setSidebar] = useState(true);
-  const [order, setOrder] = useState<Order>(EMPTY_ORDER);
+  const [page, setPage] = useState<Page>('quotations');
+  const [draft, setDraft] = useState<DraftQuotation | null>(null);
 
-  const orderLabel = [order.type, order.qty ? `${fmtI(order.qty)} ชุด` : null].filter(Boolean).join(' · ') || 'ออเดอร์ใหม่';
+  const openFromQuotation = (q: Quotation) => { setDraft(draftFromQuotation(q)); setPage('editor'); };
+  const openDraft = (d: DraftQuotation) => { setDraft(d); setPage('editor'); };
+  const openBlank = () => { setDraft(emptyDraft()); setPage('editor'); };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: page === 'pricing' ? 'auto' : 'hidden' }}>
-      <Header page={page} onNav={setPage} onToggleSidebar={() => setSidebar(s => !s)} orderLabel={orderLabel} />
-      {page === 'chat' && <ChatPage order={order} onOrderChange={setOrder} onPricing={() => setPage('pricing')} sidebarOpen={sidebar} />}
-      {page === 'pricing' && <PricingPage order={order} />}
-      {page === 'quotations' && <QuotationsPage />}
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }} className="app-chrome">
+      <Header page={page} onNav={setPage} onNewBlank={openBlank} editorActive={draft != null} />
+      {page === 'quotations' && <QuotationsPage onUseAsTemplate={openFromQuotation} onOpenDraft={openDraft} />}
+      {page === 'editor' && draft && (
+        <EditorPage
+          key={draft.id}
+          initial={draft}
+          onBack={() => setPage('quotations')}
+        />
+      )}
+      {page === 'editor' && !draft && <QuotationsPage onUseAsTemplate={openFromQuotation} onOpenDraft={openDraft} />}
     </div>
   );
 }
