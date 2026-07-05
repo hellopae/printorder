@@ -1,6 +1,7 @@
 import type { Page } from '../lib/types';
 import { T } from '../lib/theme';
 import { PRINTCAL_URL, PRINTCOST_URL } from '../lib/costEngine';
+import logo from '../assets/logo.png';
 
 const linkStyle: React.CSSProperties = {
   padding: '6px 12px', background: 'rgba(255,255,255,.13)', borderRadius: 8,
@@ -25,10 +26,8 @@ export function Header({ page, onNav, onNewBlank, editorActive }: {
       justifyContent: 'space-between', boxShadow: '0 2px 16px rgba(15,45,107,.25)', zIndex: 100,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(255,255,255,.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
-            <rect x="5" y="2" width="14" height="20" rx="2" /><path d="M8 6h8M8 10h8M8 14h5" />
-          </svg>
+        <div style={{ width: 36, height: 36, borderRadius: 8, background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+          <img src={logo} alt="TANAPAT" style={{ width: 30, height: 34, objectFit: 'contain' }} />
         </div>
         <div>
           <div style={{ fontSize: 14, fontWeight: 700, color: 'white', lineHeight: 1.1 }}>ธนะพัฒน์พริ้นติ้ง</div>

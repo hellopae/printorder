@@ -1,6 +1,7 @@
 import type { DraftQuotation } from '../lib/types';
 import { T } from '../lib/theme';
 import { itemAmount, itemUnitPrice, thaiBahtText } from '../lib/costEngine';
+import logo from '../assets/logo.png';
 
 /* =====================================================================
    ใบเสนอราคา layout ตามฟอร์มจริงของ TANAPAT (อ้างอิงใบเก่า เช่น #1309)
@@ -48,13 +49,7 @@ export function PrintSheet({ draft, totals, onClose }: {
       }}>
         {/* ===== หัวบริษัท ===== */}
         <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', borderBottom: `3px double ${B}`, paddingBottom: 10 }}>
-          <div style={{
-            width: 74, height: 74, border: `2.5px solid #1a3f7a`, borderRadius: 10, flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', color: '#1a3f7a',
-          }}>
-            <div style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>ธพ</div>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1 }}>TANAPAT</div>
-          </div>
+          <img src={logo} alt="TANAPAT logo" style={{ width: 76, height: 86, objectFit: 'contain', flexShrink: 0 }} />
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 17, fontWeight: 800 }}>
               บริษัท ธนะพัฒน์พริ้นติ้งแอนด์พับลิเคชั่น จำกัด
