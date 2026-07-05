@@ -44,3 +44,8 @@ input.inline-input {
 @media print {
   .print-outer { background: white !important; padding: 0 !important; overflow: visible !important; }
 }
+/* ช่องกรอกบนแผ่นใบเสนอราคา: ตอนพิมพ์ให้เห็นเฉพาะค่า ไม่เห็นเส้นช่องกรอก */
+@media print {
+  .sheet-fill { border-bottom-color: transparent !important; }
+  .sheet-fill::placeholder { color: transparent !important; }
+}

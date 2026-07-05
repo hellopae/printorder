@@ -5,7 +5,7 @@ import {
   REF_RATES, PRINTCAL_URL, PRINTCOST_URL, newId,
   itemAmount, itemUnitPrice, rescaleForQty, rescaleForUnitPrice,
 } from '../lib/costEngine';
-import { draftTotals, saveDraft } from '../lib/drafts';
+import { draftTotals, normalizeDraft, saveDraft } from '../lib/drafts';
 import { PrintSheet } from '../components/PrintSheet';
 
 /* ---------- ช่องกรอกตัวเลข: พิมพ์อิสระ commit ตอน blur/Enter ---------- */
@@ -170,7 +170,7 @@ export function EditorPage({ initial, onBack }: {
   initial: DraftQuotation;
   onBack: () => void;
 }) {
-  const [draft, setDraft] = useState<DraftQuotation>(initial);
+  const [draft, setDraft] = useState<DraftQuotation>(() => normalizeDraft(initial));
   const [showPrint, setShowPrint] = useState(false);
   const [savedTick, setSavedTick] = useState(false);
   const [refOpen, setRefOpen] = useState(false);
@@ -188,7 +188,7 @@ export function EditorPage({ initial, onBack }: {
   const updItem = (it: DraftItem) => upd({ items: draft.items.map(x => x.id === it.id ? it : x) });
 
   if (showPrint) {
-    return <PrintSheet draft={draft} totals={totals} onClose={() => setShowPrint(false)} />;
+    return <PrintSheet draft={draft} totals={totals} onUpdate={upd} onClose={() => setShowPrint(false)} />;
   }
 
   return (

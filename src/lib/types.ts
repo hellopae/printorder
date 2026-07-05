@@ -36,6 +36,14 @@ export type DraftItem = {
   specs: string[];
 };
 
+/** เงื่อนไขท้ายใบ — ติ๊กเลือก + กรอกตัวเลขได้ ตามฟอร์มจริง */
+export type QuotationConditions = {
+  creditChecked: boolean; creditDays: string;      // เงื่อนไขการชำระเงิน...ไม่เกิน N วัน
+  vatNoteChecked: boolean;                         // ราคาที่เสนอมานี้ไม่รวมภาษีมูลค่าเพิ่ม
+  depositChecked: boolean; depositPct: string;     // ขอเก็บมัดจำล่วงหน้า N %
+  confirmChecked: boolean; confirmDays: string;    // ยืนยันราคา N วัน
+};
+
 export type DraftQuotation = {
   id: string;
   createdAt: string;
@@ -48,6 +56,9 @@ export type DraftQuotation = {
   salesTel: string;
   vatEnabled: boolean;
   items: DraftItem[];
+  conditions: QuotationConditions;
+  note: string;          // หมายเหตุ (กล่องล่างซ้าย)
+  confirmDate: string;   // วันที่ในช่องลูกค้ายืนยันการสั่งซื้อ (พิมพ์ได้)
   sourceFile: string | null;   // ใบเก่าที่ใช้เป็นแบบ
   sourceLabel: string | null;
 };

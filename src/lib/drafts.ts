@@ -1,4 +1,4 @@
-import type { DraftQuotation, Quotation } from './types';
+import type { DraftQuotation, Quotation, QuotationConditions } from './types';
 import { QUOTATIONS } from './quotations';
 import { newId, quotationItemToDraft } from './costEngine';
 
@@ -6,10 +6,27 @@ import { newId, quotationItemToDraft } from './costEngine';
 
 const KEY = 'orderassist_drafts_v1';
 
+export const defaultConditions = (vatEnabled: boolean): QuotationConditions => ({
+  creditChecked: false, creditDays: '30',
+  vatNoteChecked: !vatEnabled,
+  depositChecked: false, depositPct: '',
+  confirmChecked: true, confirmDays: '30',
+});
+
+/** เติมค่า default ให้ draft เก่าที่บันทึกก่อนมี field ใหม่ */
+export function normalizeDraft(d: DraftQuotation): DraftQuotation {
+  return {
+    ...d,
+    conditions: d.conditions ?? defaultConditions(d.vatEnabled),
+    note: d.note ?? '',
+    confirmDate: d.confirmDate ?? '',
+  };
+}
+
 export function loadDrafts(): DraftQuotation[] {
   try {
     const d = JSON.parse(localStorage.getItem(KEY) || '[]');
-    return Array.isArray(d) ? d : [];
+    return Array.isArray(d) ? d.map(normalizeDraft) : [];
   } catch { return []; }
 }
 
@@ -58,6 +75,9 @@ export function draftFromQuotation(q: Quotation): DraftQuotation {
     salesTel: '095-6529929',
     vatEnabled: q.vat != null && q.vat > 0,
     items: q.items.map(quotationItemToDraft),
+    conditions: defaultConditions(q.vat != null && q.vat > 0),
+    note: '',
+    confirmDate: '',
     sourceFile: q.file,
     sourceLabel: `#${q.quote_no || '—'} · ${q.customer || ''}`,
   };
@@ -85,6 +105,9 @@ export function emptyDraft(): DraftQuotation {
       ],
       specs: [],
     }],
+    conditions: defaultConditions(true),
+    note: '',
+    confirmDate: '',
     sourceFile: null,
     sourceLabel: null,
   };
