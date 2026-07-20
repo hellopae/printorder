@@ -7,6 +7,7 @@ import {
 } from '../lib/costEngine';
 import { draftTotals, normalizeDraft, saveDraft } from '../lib/drafts';
 import { PrintSheet } from '../components/PrintSheet';
+import { StackBar, TotalBreakdown, stepColor } from '../components/CostChart';
 
 /* ---------- ช่องกรอกตัวเลข: พิมพ์อิสระ commit ตอน blur/Enter ---------- */
 function NumField({ value, onCommit, width = 90, bold, alignLeft }: {
@@ -55,6 +56,7 @@ function StepRow({ step, share, onChange, onRemove }: {
 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 0', borderBottom: `1px dashed ${T.slate100}` }}>
+      <span style={{ width: 10, height: 10, borderRadius: 3, background: stepColor(step.name), flexShrink: 0, border: '1px solid rgba(0,0,0,.08)' }} />
       <input value={step.name} onChange={e => onChange({ ...step, name: e.target.value })}
         style={{ flex: 1, border: 'none', outline: 'none', fontSize: 13, fontFamily: 'inherit', color: T.slate800, fontWeight: 600, background: 'transparent', minWidth: 0 }} />
       <button
@@ -126,6 +128,11 @@ function ItemCard({ item, index, onChange, onRemove, canRemove }: {
         <div style={{ fontSize: 11.5, fontWeight: 700, color: T.slate600, marginBottom: 2 }}>
           🧩 ขั้นตอน + ราคา (รวมกัน = ราคารายการ) — แก้ราคาแต่ละขั้นได้เลย
         </div>
+        {amount > 0 && item.steps.length > 1 && (
+          <div style={{ margin: '6px 0 8px' }}>
+            <StackBar parts={item.steps.map(s => ({ label: s.name, color: stepColor(s.name), value: s.price }))} />
+          </div>
+        )}
         {item.steps.map(s => (
           <StepRow key={s.id} step={s} share={amount > 0 ? (s.price / amount) * 100 : 0}
             onChange={ns => onChange({ ...item, steps: item.steps.map(x => x.id === ns.id ? ns : x) })}
@@ -291,6 +298,8 @@ export function EditorPage({ initial, onBack }: {
             </div>
           </div>
         </div>
+
+        <TotalBreakdown items={draft.items} />
 
         <button onClick={() => setShowPrint(true)} style={{
           width: '100%', padding: '13px', borderRadius: 12, border: 'none', cursor: 'pointer',
